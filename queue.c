@@ -84,9 +84,6 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
-    /* TODO: You need to write the complete code for this function */
-    /* Remember: It should operate in O(1) time */
-    /* TODO: Remove the above comment when you are about to implement. */
     if (q == NULL)
         return false;
 
@@ -190,6 +187,23 @@ void q_reverse(queue_t *q)
  */
 void q_sort(queue_t *q)
 {
-    /* TODO: You need to write the code for this function */
-    /* TODO: Remove the above comment when you are about to implement. */
+    if (q == NULL || q->head == NULL || q->size == 1)
+        return;
+
+    list_ele_t *current = q->head;
+    list_ele_t *compare;
+    char *tmp;
+
+    while (current->next != NULL) {
+        compare = current->next;
+        while (compare != NULL) {
+            if (current->value[0] > compare->value[0]) {
+                tmp = current->value;
+                current->value = compare->value;
+                compare->value = tmp;
+            }
+            compare = compare->next;
+        }
+        current = current->next;
+    }
 }

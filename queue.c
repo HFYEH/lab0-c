@@ -12,7 +12,7 @@
 queue_t *q_new()
 {
     queue_t *q = malloc(sizeof(queue_t));
-    if (q == NULL)
+    if (!q)
         return NULL;
 
     q->head = NULL;
@@ -24,11 +24,11 @@ queue_t *q_new()
 /* Free all storage used by queue */
 void q_free(queue_t *q)
 {
-    if (q == NULL)
+    if (!q)
         return;
 
     list_ele_t *del = q->head;
-    while (del != NULL) {
+    while (del) {
         q->head = del->next;
         q->size -= 1;
         if (q->head == NULL) {
@@ -51,24 +51,24 @@ void q_free(queue_t *q)
  */
 bool q_insert_head(queue_t *q, char *s)
 {
-    if (q == NULL)
+    if (!q)
         return false;
 
     list_ele_t *newh = (list_ele_t *) malloc(sizeof(list_ele_t));
-    if (newh == NULL) {
+    if (!newh) {
         return false;
     }
 
     int len = strlen(s);
     newh->value = (char *) malloc((len + 1) * sizeof(char));
-    if (newh->value == NULL) {
+    if (!newh->value) {
         free(newh);
         return false;
     }
     strncpy(newh->value, s, len + 1);
 
     newh->next = q->head;
-    if (q->head == NULL)
+    if (!q->head)
         q->tail = newh;
     q->head = newh;
     q->size += 1;
@@ -84,24 +84,24 @@ bool q_insert_head(queue_t *q, char *s)
  */
 bool q_insert_tail(queue_t *q, char *s)
 {
-    if (q == NULL)
+    if (!q)
         return false;
 
     list_ele_t *newh = (list_ele_t *) malloc(sizeof(list_ele_t));
-    if (newh == NULL) {
+    if (!newh) {
         return false;
     }
 
     int len = strlen(s);
     newh->value = (char *) malloc((len + 1) * sizeof(char));
-    if (newh->value == NULL) {
+    if (!newh->value) {
         free(newh);
         return false;
     }
     strncpy(newh->value, s, len + 1);
     newh->next = NULL;
 
-    if (q->head == NULL) {
+    if (!q->head) {
         q->head = newh;
     } else {
         q->tail->next = newh;
@@ -121,16 +121,16 @@ bool q_insert_tail(queue_t *q, char *s)
  */
 bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
 {
-    if (q == NULL || q->head == NULL)
+    if (!q || !q->head)
         return false;
 
     list_ele_t *del = q->head;
     q->head = q->head->next;
     q->size -= 1;
-    if (q->head == NULL)
+    if (!q->head)
         q->tail = NULL;
 
-    if (sp != NULL) {
+    if (sp) {
         size_t len = strlen(del->value);
         size_t maxlen = len + 1 > bufsize ? bufsize : len + 1;
         strncpy(sp, del->value, maxlen - 1);
@@ -148,7 +148,7 @@ bool q_remove_head(queue_t *q, char *sp, size_t bufsize)
  */
 int q_size(queue_t *q)
 {
-    if (q == NULL)
+    if (!q)
         return 0;
     return q->size;
 }
@@ -162,7 +162,7 @@ int q_size(queue_t *q)
  */
 void q_reverse(queue_t *q)
 {
-    if (q == NULL || q->head == NULL)
+    if (!q || !q->head)
         return;
 
     list_ele_t *current = q->tail;
@@ -187,16 +187,16 @@ void q_reverse(queue_t *q)
  */
 void q_sort(queue_t *q)
 {
-    if (q == NULL || q->head == NULL || q->size == 1)
+    if (!q || !q->head || q->size == 1)
         return;
 
     list_ele_t *current = q->head;
     list_ele_t *compare;
     char *tmp;
 
-    while (current->next != NULL) {
+    while (current->next) {
         compare = current->next;
-        while (compare != NULL) {
+        while (compare) {
             if (current->value[0] > compare->value[0]) {
                 tmp = current->value;
                 current->value = compare->value;

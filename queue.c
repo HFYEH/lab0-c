@@ -4,6 +4,7 @@
 
 #include "harness.h"
 #include "queue.h"
+#include "strnatcmp.h"
 
 /*
  * Create empty queue.
@@ -188,7 +189,7 @@ void q_sort(queue_t *q)
     while (current->next) {
         compare = current->next;
         while (compare) {
-            if (current->value[0] > compare->value[0]) {
+            if (strnatcasecmp(current->value, compare->value) == 1) {
                 tmp = current->value;
                 current->value = compare->value;
                 compare->value = tmp;

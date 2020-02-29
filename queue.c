@@ -183,19 +183,22 @@ void q_sort(queue_t *q)
         return;
 
     list_ele_t *current = q->head;
-    list_ele_t *compare;
+    list_ele_t *select;
+    list_ele_t *min;
     char *tmp;
 
     while (current->next) {
-        compare = current->next;
-        while (compare) {
-            if (strnatcasecmp(current->value, compare->value) == 1) {
-                tmp = current->value;
-                current->value = compare->value;
-                compare->value = tmp;
+        select = current->next;
+        min = current;
+        while (select) {
+            if (strnatcasecmp(min->value, select->value) == 1) {
+                min = select;
             }
-            compare = compare->next;
+            select = select->next;
         }
+        tmp = min->value;
+        min->value = current->value;
+        current->value = tmp;
         current = current->next;
     }
 }

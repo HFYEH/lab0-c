@@ -27,18 +27,9 @@ void q_free(queue_t *q)
     if (!q)
         return;
 
-    list_ele_t *del = q->head;
-    while (del) {
-        q->head = del->next;
-        q->size -= 1;
-        if (q->head == NULL) {
-            q->tail = NULL;
-        }
+    while (q_remove_head(q, NULL, 0))
+        ;
 
-        free(del->value);
-        free(del);
-        del = q->head;
-    }
     free(q);
 }
 

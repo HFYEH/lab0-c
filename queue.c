@@ -154,22 +154,23 @@ int q_size(queue_t *q)
  */
 void q_reverse(queue_t *q)
 {
-    if (!q || !q->head)
+    if (!q || !q->head || !q->head->next)
         return;
 
-    list_ele_t *current = q->tail;
-    list_ele_t *prev;
-    while (current != q->head) {
-        prev = q->head;
-        while (current != prev->next) {
-            prev = prev->next;
-        }
-        current->next = prev;
-        current = prev;
+    list_ele_t *node = q->head->next;
+    list_ele_t *prev = q->head;
+    list_ele_t *next;
+    while (node->next) {
+        next = node->next;
+        node->next = prev;
+        prev = node;
+        node = next;
     }
-    current->next = NULL;
-    q->head = q->tail;
-    q->tail = current;
+
+    q->tail = q->head;
+    q->tail->next = NULL;
+    q->head = node;
+    q->head->next = prev;
 }
 
 /*
@@ -202,3 +203,37 @@ void q_sort(queue_t *q)
         current = current->next;
     }
 }
+
+/*
+list *sort(list *start) {
+    if (!start || !start->next)
+        return start;
+    list *left = start;
+    list *right = left->next;
+    LL0;
+
+    left = sort(left);
+    right = sort(right);
+
+    for (list *merge = NULL; left || right; ) {
+        if (!right || (left && left->data < right->data)) {
+            if (!merge) {
+                start = merge = left;
+            } else {
+                merge->next = left;
+                merge = merge->next;
+            }
+            left = left->next;
+        } else {
+            if (!merge) {
+                start = merge = right;
+            } else {
+                merge->next = right;
+                merge = merge->next;
+            }
+            right = right->next;
+        }
+    }
+    return start;
+}
+*/
